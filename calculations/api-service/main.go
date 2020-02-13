@@ -25,6 +25,10 @@ func main() {
 		K int64 `json:"k"`
 	}
 
+	type FibRes struct {
+		Fibonacci uint64
+	}
+
 	routes := mux.NewRouter()
 	routes.HandleFunc("/", indexHandler).Methods("GET")
 	routes.HandleFunc("/fibonacci", func(w http.ResponseWriter, r *http.Request) {
@@ -42,8 +46,9 @@ func main() {
 
 		req := &pb.FibRequest{FibNum: uint64(fibJSON.K)}
 		if resp, err := fibClient.Compute(ctx, req); err == nil {
-			msg := fmt.Sprintf("Fibonacci number is %d", resp.Result)
-			json.NewEncoder(w).Encode(msg)
+			//msg := fmt.Sprintf("Fibonacci number is %d", resp.Result)
+			fibRes := FibRes{Fibonacci: resp.Result}
+			json.NewEncoder(w).Encode(fibRes)
 		} else {
 			msg := fmt.Sprintf("Internal server error: %s", err.Error())
 			json.NewEncoder(w).Encode(msg)
