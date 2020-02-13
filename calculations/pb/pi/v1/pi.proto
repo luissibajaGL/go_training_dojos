@@ -1,0 +1,16 @@
+  
+syntax = "proto3";
+
+package pb.pi.v1;
+
+message PiRequest {
+  uint64 pi = 1;
+}
+
+message PiResponse {
+  uint64 result = 1;
+}
+
+service PiService {
+  rpc Compute (PiRequest) returns (PiResponse) {}
+}
